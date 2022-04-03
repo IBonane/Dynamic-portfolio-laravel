@@ -15,3 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [Controller::class, 'home'])->name('home');
+
+Route::get('/create-profil', [Controller::class, 'createProfil'])->name('createProfil.show');
+
+Route::get('/add-experience', [Controller::class, 'addExperience'])->name('addExperience.show');
+
+Route::get('/add-competence', [Controller::class, 'addCompetence'])->name('addCompetence.show');
+
+Route::get('/add-formation', [Controller::class, 'addFormation'])->name('addFormation.show');
+
+Route::get('/add-certification', [Controller::class, 'addCertification'])->name('addCertification.show');
+
+Route::get('/list', [Controller::class, 'list'])->name('list.show');

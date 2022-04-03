@@ -52,4 +52,34 @@ class Controller extends BaseController
             'certificates' => $certificates
         ]);
     }
+
+    public function createProfil()
+    {
+        return view('create_profil');
+    }
+
+    public function addExperience()
+    {
+        return view('create_experience');
+    }
+
+    public function addCompetence()
+    {
+        return view('create_competence');
+    }
+
+    public function addFormation()
+    {
+        return view('create_formation');
+    }
+
+    public function addCertification()
+    {
+        return view('create_certification');
+    }
+
+    public function list()
+    {
+        return view('list');
+    }
 }
