@@ -15,9 +15,10 @@
 
 @section('content')
     <!-- ======= Hero Section ======= -->
-    <section style="background: url({{ Storage::url($person->coverImage) }}) top center; background-size: cover" id="hero"
-        class="d-flex flex-column justify-content-center align-items-center">
-        <div class="hero-container" data-aos="fade-in">
+    <section
+        style="background: url({{ Storage::url($person->coverImage) }}) top center; background-size: cover;"
+        id="hero" class="d-flex flex-column justify-content-center align-items-center">
+        <div class="hero-container" style="margin-left: 10%" data-aos="fade-down">
             <h1 class="mb-5">{{ $person->firstname }} {{ $person->lastname }}</h1>
             <p>I'm in {{ $person->domain }} Domain</p>
         </div>
@@ -76,7 +77,8 @@
                 </div>
 
             </div>
-        </section><!-- End About Section -->
+        </section>
+        <!-- End About Section -->
 
         <!-- ======= Skills Section ======= -->
         <section id="skills" class="skills section-bg">
@@ -84,28 +86,24 @@
 
                 <div class="section-title">
                     <h2>Skills</h2>
-                    <p style="text-align: justify">Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint
-                        consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia
-                        fugiat sit in iste officiis commodi quidem hic quas.</p>
                 </div>
-
-                <div class="row skills-content">
-
-                    <div class="col-lg-6" data-aos="fade-up">
-
-                        <div class="progress">
-                            <span class="skill">HTML <i class="val">100%</i></span>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0"
-                                    aria-valuemax="100"></div>
+                <div class="row">
+                    @foreach ($skills as $skill)
+                        <div class="col-lg-4">
+                            <div data-aos="fade-up">
+                                <h5 class="text-primary text-bold">{{ $skill->title }}</h5>
+                                <ul style="text-align: justify">
+                                    @foreach (explode(';', $skill->descriptions) as $desc)
+                                        <li>{{ $desc }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
-                    </div>
-
+                    @endforeach
                 </div>
-
             </div>
-        </section><!-- End Skills Section -->
+        </section>
+        <!-- End Skills Section -->
 
         <!-- ======= Experience Section ======= -->
 
@@ -115,16 +113,29 @@
                 <div class="section-title">
                     <h2>Experience</h2>
                 </div>
-                <div class="d-flex-lg justify-content-center" data-aos="fade-up">
-                    <div class="resume-item">
-                        <h4>Master of Fine Arts Graphic Design</h4>
-                        <h5>2015 - 2016</h5>
-                        <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
-                        <p style="text-align: justify">Qui deserunt veniam. Et sed aliquam labore tempore sed quisquam iusto autem sit. Ea vero
-                            voluptatum qui ut dignissimos deleniti nerada porti sand markend
-                        </p>
+                @if (empty($experiences))
+                    <div class="d-flex-lg justify-content-center" data-aos="fade-up">
+                        <div class="resume-item">
+                            Empty
+                        </div>
                     </div>
-                </div>
+                @else
+                    @foreach ($experiences as $experience)
+                        <div class="d-flex-lg justify-content-center" data-aos="fade-up">
+                            <div class="resume-item">
+                                <h4>{{ $experience->title }}</h4>
+                                <h5>{{ $experience->beginDate }} - {{ $experience->endDate }}</h5>
+                                <p><em>{{ $experience->companyName }}, {{ $experience->city }},
+                                        {{ $experience->country }}</em></p>
+                                <ul style="text-align: justify">
+                                    @foreach (explode(';', $experience->descriptions) as $desc)
+                                        <li>{{ $desc }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </section>
         <!-- End Experience Section -->
@@ -136,36 +147,106 @@
                 <div class="section-title">
                     <h2>Education</h2>
                 </div>
-                <div class="d-flex-lg justify-content-center" data-aos="fade-up">
-                    <div class="resume-item">
-                        <h4>Master of Fine Arts Graphic Design</h4>
-                        <h5>2015 - 2016</h5>
-                        <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
-                        <p style="text-align: justify">Qui deserunt veniam. Et sed aliquam labore tempore sed quisquam iusto autem sit. Ea vero
-                            voluptatum qui ut dignissimos deleniti nerada porti sand markend
-                        </p>
+                @if (empty($experiences))
+                    <div class="d-flex-lg justify-content-center" data-aos="fade-up">
+                        <div class="resume-item">
+                            Empty
+                        </div>
                     </div>
-                </div>
+                @else
+                    @foreach ($formations as $formation)
+                        <div class="d-flex-lg justify-content-center" data-aos="fade-up">
+                            <div class="resume-item">
+                                <h4>{{ $formation->title }}</h4>
+                                <h5>{{ $formation->beginDate }} - {{ $formation->endDate }}</h5>
+                                <p><em>{{ $formation->schoolName }}, {{ $formation->city }},
+                                        {{ $formation->country }}</em></p>
+                                <p style="text-align: justify">{{ $formation->descriptions }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </section>
         <!-- End Education Section -->
 
+        <!-- ======= Certification Section ======= -->
+        @if (!empty($certificates))
+            <section id="certification" class="contact">
+                <div class="container">
+
+                    <div class="section-title">
+                        <h2>Certification</h2>
+                    </div>
+
+                    <div class="row justify-content-center" data-aos="">
+                        @foreach ($certificates as $certificate)
+                            <div class="col-lg-5 d-flex align-items-stretch">
+                                <div class="info mb-4">
+                                    <div class="text-break" style="margin-left: -15%">
+                                        <h4>{{ $certificate->title }}</h4>
+                                        <p class="text-info" style="font-size: 20px">
+                                            {{ $certificate->organizationName }}</p>
+                                        <p>{{ $certificate->receiptDate }} | {{ $certificate->city }},
+                                            {{ $certificate->country }}</p>
+
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#myModal{{ $certificate->id }}" style="float: right">
+                                            Learn more
+                                        </button>
+                                        <!-- ===============Modal =======================-->
+                                        <div class="modal" id="myModal{{ $certificate->id }}">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Certification :
+                                                            <span class="text-info h5">{{ $certificate->title }}</span>
+                                                        </h4>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body"
+                                                        style="text-align: justify; margin-right:10%">
+                                                        <p>{{ $certificate->descriptions }}</p>
+                                                    </div>
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ===================End Modal===================== -->
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
+        @endif
+        <!-- End Certification Section -->
+
         <!-- ======= Contact Section ======= -->
-        <section id="contact" class="contact">
-            <div class="container">
+        <section id="contact" class="contact @if (!empty($certificates)) section-bg @endif">
+            <div class="container" style="margin-bottom: 20%">
 
                 <div class="section-title">
                     <h2>Contact</h2>
                     <p style="text-align: justify">
-                        Envie d'en savoir plus sur mon profil contacter-moi par e-mail
-                        ou directement par téléphone !
+                        Want to know more about my profile ?
+                        Contact me by e-mail or directly by phone !
                     </p>
                 </div>
 
                 <div class="row" data-aos="fade-in">
 
-                    <div class="col-lg-5 d-flex align-items-stretch h-50">
-                        <div class="info">
+                    <div class="col-lg-8 d-flex align-items-stretch">
+                        <div class="info mx-lg-5">
                             <div class="address">
                                 <a href="https://www.google.com/maps/place/{{ $person->city }}" target="_blank"
                                     rel="noopener">
@@ -197,9 +278,11 @@
                 </div>
 
             </div>
-        </section><!-- End Contact Section -->
+        </section>
+        <!-- End Contact Section -->
 
-    </main><!-- End #main -->
+    </main>
+    <!-- End #main -->
 
     <!-- ======= Footer ======= -->
     <footer id="footer">

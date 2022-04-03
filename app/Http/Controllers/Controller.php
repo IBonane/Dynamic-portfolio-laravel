@@ -21,13 +21,35 @@ class Controller extends BaseController
 
     public function home()
     {
+        //person
         $person = $this->repository->getPerson()[0];
 
         $age = Carbon::parse($person->birthday)->diff(Carbon::now())->y;
 
         $phone = str_replace(' ', '', $person->phone);
-        // dd($phone);
-        
-        return view('home', ['person'=>$person, 'age'=>$age, 'phone'=>$phone]);
+
+        //Experiences
+        $experiences = $this->repository->getExperiences();
+
+        //Formations
+        $formations = $this->repository->getFormations();
+
+        //Skills
+        $skills = $this->repository->getSkills();
+
+        //Certificates
+        $certificates = $this->repository->getCertificates();
+
+        //dd($certificates);
+
+        return view('home', [
+            'person' => $person,
+            'age' => $age,
+            'phone' => $phone,
+            'experiences' => $experiences,
+            'formations' => $formations,
+            'skills' => $skills,
+            'certificates' => $certificates
+        ]);
     }
 }

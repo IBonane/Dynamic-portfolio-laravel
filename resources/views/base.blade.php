@@ -72,13 +72,13 @@
                     </li>
                     <li>
                         <a href="#skills" class="nav-link scrollto">
-                            <i class="bx bx-file-blank"></i>
+                            <i class="bi bi-arrows-angle-expand"></i>
                             <span>Skills</span>
                         </a>
                     </li>
                     <li>
                         <a href="#experience" class="nav-link scrollto">
-                            <i class="bx bx-file-blank"></i>
+                            <i class="bi bi-arrow-up-right-circle"></i>
                             <span>Experience</span>
                         </a>
                     </li>
@@ -86,6 +86,12 @@
                         <a href="#education" class="nav-link scrollto">
                             <i class="bx bx-book-content"></i>
                             <span>Education</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#certification" class="nav-link scrollto">
+                            <i class="bi bi-patch-check"></i>
+                            <span>Certification</span>
                         </a>
                     </li>
                     <li>
