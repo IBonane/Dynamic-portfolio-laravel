@@ -1,4 +1,4 @@
-@extends('admin')
+@extends('baseUser')
 
 @section('title', 'profil')
 

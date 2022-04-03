@@ -14,9 +14,34 @@ class Repository
         DB::unprepared(file_get_contents('database/build.sql'));
     }
 
-    function createPerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $password):void
+    function addSuperUser($idSuperUser, $password): void
     {
         $hashPassword = Hash::make($password);
+        DB::table('SuperUser')->insert(['id' => $idSuperUser,
+                                     'hashPassword' => $hashPassword]);
+    }
+
+    function getSuperUser(string $idSuperUser, string $password): array
+    {
+        $rows = DB::table('SuperUser')
+            ->where('id', $idSuperUser)
+            ->get();
+
+        if (count($rows) == 0) {
+            throw new Exception('utilisateur inconnu');
+        }
+
+        $rowUser = $rows[0];
+
+        if (!(Hash::check($password, $rowUser->hashPassword))) {
+            throw new Exception('utilisateur inconnu');
+        }
+
+        return ['id' => $rowUser->id];
+    }
+
+    function createPerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $idSuperUser):void
+    {
 
         DB::table('Person')->insert([
             'firstname' => $firstname,
@@ -32,7 +57,7 @@ class Repository
             'aboutImage' => $aboutImage,
             'domain' => $domain,
             'presentation' => $presentation,
-            'hashPassword' => $hashPassword
+            'idSuperUser' => $idSuperUser
 
         ]);
     }
@@ -141,13 +166,6 @@ class Repository
         //TODO
     }
 
-    /*idPerson INTEGER NOT NULL,
-    title VARCHAR(100),
-    receiptDate DATE,
-    organizationName VARCHAR(255),
-    country VARCHAR(100),
-    city VARCHAR(100),
-    descriptions TEXT,*/
      //addCertificate
      function addCertificate($idPerson, $title, $receiptDate, $organizationName, $country, $city, $descriptions):void
      {

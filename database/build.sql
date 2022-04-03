@@ -8,6 +8,13 @@ DROP TABLE IF EXISTS Experiences;
 
 DROP TABLE IF EXISTS Person;
 
+DROP TABLE IF EXISTS SuperUser;
+
+CREATE TABLE SuperUser(
+    id VARCHAR(100) PRIMARY KEY NOT NULL,
+    hashPassword VARCHAR(100) NOT NULL
+);
+
 CREATE TABLE Person(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     firstname VARCHAR(60),
@@ -23,7 +30,8 @@ CREATE TABLE Person(
     aboutImage VARCHAR(100),
     domain VARCHAR(100),
     presentation TEXT,
-    hashPassword VARCHAR(100) NOT NULL
+    idSuperUser VARCHAR(100) NOT NULL,
+    FOREIGN KEY(idSuperUser) REFERENCES SuperUser(id)
 );
 
 CREATE TABLE Experiences(

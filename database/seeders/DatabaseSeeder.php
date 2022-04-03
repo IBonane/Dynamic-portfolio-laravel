@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->repository = new Repository();
         $this->repository->createDatabase();
 
+        //Admin
+        $this->repository->addSuperUser('#!WinoDjimba!AO@#', '!MeineProfil4516!');
         //person
         $firstname = "Inoussa Djimbala";
         $lastname = "Bonane";
@@ -31,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $headerImage = "default/profil.png";
         $coverImage = "default/cover.jpg";
         $aboutImage = "default/about.jpg";
-        $password = "secret123";
+        $idSuperUser = "#!WinoDjimba!AO@#";
         $domain = "Computer Science";
         $presentation = "To enhance my professional skills, abilities and 
                         knowledge in an organization that recognizes the value of hard work and gives 
@@ -52,7 +54,7 @@ class DatabaseSeeder extends Seeder
             $aboutImage,
             $domain,
             $presentation,
-            $password
+            $idSuperUser
         );
 
         //same person

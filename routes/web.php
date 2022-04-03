@@ -27,3 +27,7 @@ Route::get('/add-formation', [Controller::class, 'addFormation'])->name('addForm
 Route::get('/add-certification', [Controller::class, 'addCertification'])->name('addCertification.show');
 
 Route::get('/list', [Controller::class, 'list'])->name('list.show');
+
+Route::get('/login', [Controller::class, 'loginShow'])->name('login.show');
+Route::post('/login', [Controller::class, 'login'])->name('login.post');
+Route::post('/logout', [Controller::class, 'logout'])->name('logout');
