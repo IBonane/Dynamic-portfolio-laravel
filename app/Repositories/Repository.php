@@ -42,6 +42,12 @@ class Repository
 
     function createPerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $idSuperUser):void
     {
+        $verifyIfNoPerson = DB::table('Person')->get()->toArray();
+
+        if(count($verifyIfNoPerson)!= 0)
+        {
+            throw new Exception('Vous avez dejà créer une personne, impossible d\'en créer une deuxième');
+        }
 
         DB::table('Person')->insert([
             'firstname' => $firstname,

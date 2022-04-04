@@ -146,5 +146,23 @@ class DatabaseSeeder extends Seeder
                         represents the total number of hours of course video at the most recent time the 
                         participant completed the course.";
         $this->repository->addCertificate($idPerson, $title, $receiptDate, $organizationName, $country, $city, $descriptions);
+
+
+        // $this->repository->createPerson(
+        //     'mick',
+        //     'kil',
+        //     '07/08/1995',
+        //     'email@gmail.com',
+        //     '+22607895456',
+        //     'Master',
+        //     'france',
+        //     'marseille',
+        //     '',
+        //     '',
+        //     '',
+        //     'info',
+        //     'salut c\'est moi',
+        //     $idSuperUser
+        // );
     }
 }
