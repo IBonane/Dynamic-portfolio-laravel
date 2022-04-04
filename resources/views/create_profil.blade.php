@@ -16,37 +16,56 @@
                             <div class="d-flex justify-content-center align-items-center mb-3">
                                 <h5>Création de profil</h5>
                             </div>
-                            <form action="" method="post" enctype="multipart/form-data">
+                            <p class="text-danger">Tous les champs en "*" sont obligatoires</p>
+                            <form action="{{ route('createProfil.post') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                @if ($errors->any())
+                                    @foreach ($errors->all() as $error)
+                                        <ul class="list-unstyled" style="width:max-content">
+                                            <li class="alert alert-danger">{{ $error }}</li>
+                                        </ul>
+                                    @endforeach
+                                @endif
                                 <div class="row mt-2">
                                     <div class="col-md-6">
-                                        <label class="labels" for="firstname">Prenom</label>
-                                        <input type="text" class="form-control" placeholder="First name" name="firstname">
+                                        <label class="labels" for="firstname">Prenom <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="First name" name="firstname"
+                                            required>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="labels" for="lastname">Nom</label>
-                                        <input type="text" class="form-control" placeholder="Last name" name="lastname">
+                                        <label class="labels" for="lastname">Nom <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Last name" name="lastname"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
 
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels">Date de naissance</label>
-                                        <input type="date" class="form-control" placeholder="Birthday" name="birthday">
+                                        <label class="labels">Date de naissance <span
+                                                class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" placeholder="Birthday" name="birthday"
+                                            required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels">Email</label>
-                                        <input type="email" class="form-control" placeholder="Email" name="email">
+                                        <label class="labels">Email <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" placeholder="Email" name="email"
+                                            required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels">Contact</label>
-                                        <input type="text" class="form-control" placeholder="Phone number" name="phone">
+                                        <label class="labels">Contact <span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control"
+                                            placeholder="Phone number format : +33 6 11 11 12 12 ; Ecrire sans le premier zero de votre N°"
+                                            name="phone" required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels">Niveau d'étude</label>
+                                        <label class="labels">Niveau d'étude <span
+                                                class="text-danger">*</span></label>
                                         <select class="form-select" name="degree">
                                             <option value="College">Bac</option>
                                             <option value="Associate">Bac + 1</option>
@@ -58,15 +77,17 @@
                                     </div>
 
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels">Domaine de compétence</label>
-                                        <input type="text" class="form-control" placeholder="Domain" name="domain">
+                                        <label class="labels">Domaine de compétence <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Domain" name="domain"
+                                            required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels mb-1">Présentez-vous<a href="!#"
-                                                class="mx-3 text-link bi-cursor" data-bs-toggle="modal"
+                                        <label class="labels mb-1">Présentez-vous <span class="text-danger">*</span><a
+                                                href="!#" class="mx-3 text-link bi-cursor" data-bs-toggle="modal"
                                                 data-bs-target="#myModal">voir-exemple</a></label>
-                                        <textarea type="text" class="form-control" placeholder="Presentation" name="presentation"></textarea>
+                                        <textarea type="text" class="form-control" placeholder="Presentation" name="presentation" required></textarea>
                                     </div>
                                     <!-- ===============Modal =======================-->
                                     <div class="modal" id="myModal">
@@ -96,9 +117,10 @@
                                     </div>
                                     <!-- ===================End Modal===================== -->
                                     <div class="mb-3">
-                                        <label for="headerImage" class="form-label">Image d'entête</label>
+                                        <label for="headerImage" class="form-label">Image d'entête <span
+                                                class="text-danger">*</span></label>
                                         <input class="form-control form-control-sm" id="formFileSm" type="file"
-                                            accept="image/png, image/jpeg" name="headerImage">
+                                            accept="image/png, image/jpeg" name="headerImage" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="coverImage" class="form-label">Image de couverture</label>
@@ -113,25 +135,13 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md-6 mb-4">
-                                        <label class="labels">Pays</label>
-                                        <input type="text" class="form-control" placeholder="Country" name="country">
+                                        <label class="labels">Pays <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Country" name="country"
+                                            required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="labels">Ville</label>
-                                        <input type="text" class="form-control" placeholder="City" name="city">
-                                    </div>
-                                </div>
-
-                                <div class="row mt-3">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="labels">Mot de passe</label>
-                                        <input type="password" class="form-control" placeholder="Password"
-                                            name="password">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="labels">confirmation du mot de passe</label>
-                                        <input type="password" class="form-control" placeholder="PasswordConfirm"
-                                            name="passwordConfirm">
+                                        <label class="labels">Ville <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="City" name="city" required>
                                     </div>
                                 </div>
                                 <div class="mt-5 text-center">

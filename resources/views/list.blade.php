@@ -22,7 +22,12 @@
                             </div>
                             <div class="row mt-2 card">
                                 <div class="col-md-12 card-body d-flex justify-content-between">
-                                    <h5>Mon profil</h5>
+                                    @if (empty($name))
+                                        <h5>Mon profil</h5>
+                                    @else
+                                        <h5>{{ $name }}</h5>
+                                    @endif
+
                                     <button class="btn btn-warning">Editer</button>
                                     <button class="btn btn-danger">Supprimer</button>
                                 </div>

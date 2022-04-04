@@ -13,10 +13,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//Portfolio Accueil
 Route::get('/', [Controller::class, 'home'])->name('home');
 
-Route::get('/create-profil', [Controller::class, 'createProfil'])->name('createProfil.show');
+//Profil
+Route::get('/create-profil', [Controller::class, 'showCreateProfil'])->name('createProfil.show');
+Route::post('/create-profil', [Controller::class, 'createProfil'])->name('createProfil.post');
 
 Route::get('/add-experience', [Controller::class, 'addExperience'])->name('addExperience.show');
 
