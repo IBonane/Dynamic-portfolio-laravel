@@ -34,7 +34,16 @@ Route::get('/add-competence', [Controller::class, 'addCompetence'])->name('addCo
 
 Route::get('/add-formation', [Controller::class, 'addFormation'])->name('addFormation.show');
 
-Route::get('/add-certification', [Controller::class, 'addCertification'])->name('addCertification.show');
+//Add Certification
+Route::get('/add-certification', [Controller::class, 'addShowCertification'])->name('addCertification.show');
+Route::post('/add-certification', [Controller::class, 'addCertification'])->name('addCertification.post');
+
+//Update Certification
+Route::get('/update-certification/{id}', [Controller::class, 'updateShowCertification'])->name('updateCertification.show');
+Route::post('/update-certification/{id}', [Controller::class, 'updateCertification'])->name('updateCertification.post');
+
+//delete Certification
+Route::post('/delete-certification/{id}', [Controller::class, 'deleteCertification'])->name('deleteCertification.post');
 
 Route::get('/list', [Controller::class, 'list'])->name('list.show');
 

@@ -98,12 +98,14 @@ class Repository
     function deletePerson($idSuperUser)
     {
         //CASCADING DELETE
+        $idPerson = $this->getPerson()[0]->id;
+
         //Experiences
         $experiences = $this->getExperiences();
         if (count($experiences) != 0) {
             foreach ($experiences as $experience) {
-                DB::table('Experience')
-                    ->where('idSuperUser', $idSuperUser)
+                DB::table('Experiences')
+                    ->where('idPerson', $idPerson)
                     ->where('id', $experience->id)->delete();
             }
         }
@@ -112,19 +114,18 @@ class Repository
         $formations = $this->getFormations();
         if (count($formations) != 0) {
             foreach ($formations as $formation) {
-                DB::table('Experience')
-                    ->where('idSuperUser', $idSuperUser)
+                DB::table('Formations')
+                    ->where('idPerson', $idPerson)
                     ->where('id', $formation->id)->delete();
             }
         }
-
 
         //Skills
         $skills = $this->getSkills();
         if (count($skills) != 0) {
             foreach ($skills as $skill) {
-                DB::table('Experience')
-                    ->where('idSuperUser', $idSuperUser)
+                DB::table('Skills')
+                    ->where('idPerson', $idPerson)
                     ->where('id', $skill->id)->delete();
             }
         }
@@ -133,8 +134,8 @@ class Repository
         $certificates = $this->getCertificates();
         if (count($certificates) != 0) {
             foreach ($certificates as $certificate) {
-                DB::table('Experience')
-                    ->where('idSuperUser', $idSuperUser)
+                DB::table('Certificates')
+                    ->where('idPerson', $idPerson)
                     ->where('id', $certificate->id)->delete();
             }
         }
@@ -244,13 +245,26 @@ class Repository
         return DB::table('Certificates')->get()->toArray();
     }
 
-    function updateCertificates($idCertificate)
+    function getCertificateById($idCertificate): array
     {
-        //todo
+        return DB::table('Certificates')->where('id', $idCertificate)->get()->toArray();
     }
 
-    function removeCertificates($idCertificate)
+    function updateCertificate($idCertificate, $idPerson, $title, $receiptDate, $organizationName, $country, $city, $descriptions)
     {
-        //TODO
+        DB::table('Certificates')->where('id', $idCertificate)->update([
+            'idPerson' => $idPerson,
+            'title' => $title,
+            'receiptDate' => $receiptDate,
+            'organizationName' => $organizationName,
+            'country' => $country,
+            'city' => $city,
+            'descriptions' => $descriptions
+        ]);
+    }
+
+    function deleteCertificate($idCertificate)
+    {
+        DB::table('Certificates')->where('id', $idCertificate)->delete();
     }
 }

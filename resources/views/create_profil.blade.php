@@ -26,6 +26,12 @@
                                         </ul>
                                     @endforeach
                                 @endif
+
+                                @if (session()->has('warning'))
+                                    <div class="alert alert-danger">
+                                        {{ session()->get('warning') }}
+                                    </div>
+                                @endif
                                 <div class="row mt-2">
                                     <div class="col-md-6">
                                         <label class="labels" for="firstname">Prenom <span

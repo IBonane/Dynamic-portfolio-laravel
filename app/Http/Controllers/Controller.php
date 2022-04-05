@@ -22,6 +22,13 @@ class Controller extends BaseController
         $this->repository = new Repository();
     }
 
+    // public function personIsExist()
+    // {
+    //     if (count($this->repository->getPerson()) == 0) {
+    //         return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
+    //     }
+    // }
+
     public function home()
     {
         //person
@@ -359,7 +366,7 @@ class Controller extends BaseController
 
         $idSuperUser = session()->get('user')['id'];
         $this->repository->deletePerson($idSuperUser);
-        return redirect()->route('list.show')->with('delete', 'Profil et toutes ses dépendances supprimer avec succès !');
+        return redirect()->route('list.show')->with('warning', 'Profil et toutes ses dépendances supprimer avec succès !');
     }
 
     public function addExperience()
@@ -367,6 +374,12 @@ class Controller extends BaseController
         if (!request()->session()->has('user')) {
             return redirect()->route('login.show');
         }
+
+        //person is exist ?
+        if (count($this->repository->getPerson()) == 0) {
+            return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
+        }
+
         return view('create_experience');
     }
 
@@ -375,6 +388,12 @@ class Controller extends BaseController
         if (!request()->session()->has('user')) {
             return redirect()->route('login.show');
         }
+
+        //person is exist ?
+        if (count($this->repository->getPerson()) == 0) {
+            return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
+        }
+
         return view('create_competence');
     }
 
@@ -383,7 +402,25 @@ class Controller extends BaseController
         if (!request()->session()->has('user')) {
             return redirect()->route('login.show');
         }
+        //person is exist ?
+        if (count($this->repository->getPerson()) == 0) {
+            return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
+        }
+
         return view('create_formation');
+    }
+
+    public function addShowCertification()
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+        //person is exist ?
+        if (count($this->repository->getPerson()) == 0) {
+            return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
+        }
+
+        return view('create_certification');
     }
 
     public function addCertification()
@@ -391,7 +428,112 @@ class Controller extends BaseController
         if (!request()->session()->has('user')) {
             return redirect()->route('login.show');
         }
-        return view('create_certification');
+
+        $rules = [
+            'title' => ['required'],
+            'receiptDate' => ['required'],
+            'organizationName' => ['required'],
+            'country' => ['required'],
+            'city' => ['required'],
+            'description' => ['required']
+        ];
+
+        $messages = [
+            'title.required' => "Vous devez saisir un titre",
+            'receiptDate.required' => "Entrer la date d'obtention",
+            'organizationName.required' => "Entrer le nom de l'organisme ou de la plateforme",
+            'country.required' => "Entrer le pays d'obtention",
+            'city.required' => "Entrer la ville d'obtention",
+            'description.required' => "Entrer une description"
+        ];
+
+        $validatedData = request()->validate($rules, $messages);
+
+        $title = $validatedData['title'];
+        $receiptDate = $validatedData['receiptDate'];
+        $organizationName = $validatedData['organizationName'];
+        $country = $validatedData['country'];
+        $city = $validatedData['city'];
+        $description = $validatedData['description'];
+
+        //dd($title, $receiptDate, $organizationName, $country, $city, $description);
+
+        $idPerson = $this->repository->getPerson()[0]->id;
+        //dd($idPerson);
+        try {
+            $this->repository->addCertificate($idPerson, $title, $receiptDate, $organizationName, $country, $city, $description);
+            return redirect()->route('list.show')->with('message', 'Certification créer avec succès !');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors('Création de certification echouée !');
+        }
+    }
+
+    //Update certification
+    public function updateShowCertification($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $certificate = $this->repository->getCertificateById($id)[0];
+
+        return view('update_certification', ['certificate' => $certificate]);
+    }
+
+    public function updateCertification($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $rules = [
+            'title' => ['required'],
+            'receiptDate' => ['required'],
+            'organizationName' => ['required'],
+            'country' => ['required'],
+            'city' => ['required'],
+            'description' => ['required']
+        ];
+
+        $messages = [
+            'title.required' => "Vous devez saisir un titre",
+            'receiptDate.required' => "Entrer la date d'obtention",
+            'organizationName.required' => "Entrer le nom de l'organisme ou de la plateforme",
+            'country.required' => "Entrer le pays d'obtention",
+            'city.required' => "Entrer la ville d'obtention",
+            'description.required' => "Entrer une description"
+        ];
+
+        $validatedData = request()->validate($rules, $messages);
+
+        $title = $validatedData['title'];
+        $receiptDate = $validatedData['receiptDate'];
+        $organizationName = $validatedData['organizationName'];
+        $country = $validatedData['country'];
+        $city = $validatedData['city'];
+        $description = $validatedData['description'];
+
+        // dd($title, $receiptDate, $organizationName, $country, $city, $description);
+
+        $idPerson = $this->repository->getPerson()[0]->id;
+        //dd($idPerson);
+        try {
+            $this->repository->updateCertificate($id, $idPerson, $title, $receiptDate, $organizationName, $country, $city, $description);
+            return redirect()->route('list.show')->with('message', 'Certification modifier avec succès !');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors('Modification de certification echouée !');
+        }
+    }
+
+    public function deleteCertification($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+        $title = $this->repository->getCertificateById($id)[0]->title;
+
+        $this->repository->deleteCertificate($id);
+        return redirect()->route('list.show')->with('message', 'Certfication : "'.$title.'" supprimer avec succès !');
     }
 
     public function list()
@@ -402,12 +544,31 @@ class Controller extends BaseController
 
         //person
         $person = [];
-        $name="";
+        $name = "";
         $personArray = $this->repository->getPerson();
         if (count($personArray) != 0) {
 
             $name = $personArray[0]->firstname;
         }
-        return view('list', ['name' => $name]);
+
+        //Experiences
+        $experiences = $this->repository->getExperiences();
+
+        //Formations
+        $formations = $this->repository->getFormations();
+
+        //Skills
+        $skills = $this->repository->getSkills();
+
+        //Certificates
+        $certificates = $this->repository->getCertificates();
+
+        return view('list', [
+            'name' => $name,
+            'experiences' => $experiences,
+            'formations' => $formations,
+            'skills' => $skills,
+            'certificates' => $certificates
+        ]);
     }
 }
