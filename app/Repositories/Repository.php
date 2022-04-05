@@ -17,8 +17,10 @@ class Repository
     function addSuperUser($idSuperUser, $password): void
     {
         $hashPassword = Hash::make($password);
-        DB::table('SuperUser')->insert(['id' => $idSuperUser,
-                                     'hashPassword' => $hashPassword]);
+        DB::table('SuperUser')->insert([
+            'id' => $idSuperUser,
+            'hashPassword' => $hashPassword
+        ]);
     }
 
     function getSuperUser(string $idSuperUser, string $password): array
@@ -40,12 +42,11 @@ class Repository
         return ['id' => $rowUser->id];
     }
 
-    function createPerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $idSuperUser):void
+    function createPerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $idSuperUser): void
     {
         $verifyIfNoPerson = DB::table('Person')->get()->toArray();
 
-        if(count($verifyIfNoPerson)!= 0)
-        {
+        if (count($verifyIfNoPerson) != 0) {
             throw new Exception('Vous avez dejà créer une personne, impossible d\'en créer une deuxième');
         }
 
@@ -73,23 +74,75 @@ class Repository
         return DB::table('Person')->get()->toArray();
     }
 
-    function updatePerson()
+    function updatePerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $idSuperUser): void
     {
-        //todo
+        DB::table('Person')->where('idSuperUser', $idSuperUser)->update([
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'birthday' => $birthday,
+            'email' => $email,
+            'phone' => $phone,
+            'degree' => $degree,
+            'country' => $country,
+            'city' => $city,
+            'headerImage' => $headerImage,
+            'coverImage' => $coverImage,
+            'aboutImage' => $aboutImage,
+            'domain' => $domain,
+            'presentation' => $presentation,
+            'idSuperUser' => $idSuperUser
+
+        ]);
     }
 
-    function removePerson()
+    function deletePerson($idSuperUser)
     {
-        //TODO
+        //CASCADING DELETE
+        //Experiences
+        $experiences = $this->getExperiences();
+        if (count($experiences) != 0) {
+            foreach ($experiences as $experience) {
+                DB::table('Experience')
+                    ->where('idSuperUser', $idSuperUser)
+                    ->where('id', $experience->id)->delete();
+            }
+        }
+
+        //Formations
+        $formations = $this->getFormations();
+        if (count($formations) != 0) {
+            foreach ($formations as $formation) {
+                DB::table('Experience')
+                    ->where('idSuperUser', $idSuperUser)
+                    ->where('id', $formation->id)->delete();
+            }
+        }
+
+
+        //Skills
+        $skills = $this->getSkills();
+        if (count($skills) != 0) {
+            foreach ($skills as $skill) {
+                DB::table('Experience')
+                    ->where('idSuperUser', $idSuperUser)
+                    ->where('id', $skill->id)->delete();
+            }
+        }
+
+        //Certificates
+        $certificates = $this->getCertificates();
+        if (count($certificates) != 0) {
+            foreach ($certificates as $certificate) {
+                DB::table('Experience')
+                    ->where('idSuperUser', $idSuperUser)
+                    ->where('id', $certificate->id)->delete();
+            }
+        }
+        //delete person
+        DB::table('Person')->where('idSuperUser', $idSuperUser)->delete();
     }
-/*    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    idPerson INTEGER NOT NULL,
-    title VARCHAR(100),
-    beginDate DATE,
-    endDate DATE,
-    schoolName VARCHAR(255),
-    descriptionFormation TEXT,*/
-    function addExperience($idPerson, $title, $beginDate, $endDate, $companyName, $country, $city, $descriptions):void
+
+    function addExperience($idPerson, $title, $beginDate, $endDate, $companyName, $country, $city, $descriptions): void
     {
         DB::table('Experiences')->insert([
             'idPerson' => $idPerson,
@@ -118,7 +171,7 @@ class Repository
         //TODO
     }
 
-    function addFormation($idPerson, $title, $beginDate, $endDate, $schoolName, $country, $city, $descriptions):void
+    function addFormation($idPerson, $title, $beginDate, $endDate, $schoolName, $country, $city, $descriptions): void
     {
         DB::table('Formations')->insert([
             'idPerson' => $idPerson,
@@ -148,7 +201,7 @@ class Repository
     }
 
     //addSkill
-    function addSkill($idPerson, $title, $descriptions):void
+    function addSkill($idPerson, $title, $descriptions): void
     {
         DB::table('Skills')->insert([
             'idPerson' => $idPerson,
@@ -157,7 +210,7 @@ class Repository
         ]);
     }
 
-    function getSkills():array
+    function getSkills(): array
     {
         return DB::table('Skills')->get()->toArray();
     }
@@ -172,32 +225,32 @@ class Repository
         //TODO
     }
 
-     //addCertificate
-     function addCertificate($idPerson, $title, $receiptDate, $organizationName, $country, $city, $descriptions):void
-     {
-         DB::table('Certificates')->insert([
-             'idPerson' => $idPerson,
-             'title' => $title,
-             'receiptDate' => $receiptDate,
-             'organizationName' => $organizationName,
-             'country' => $country,
-             'city' => $city,
-             'descriptions' => $descriptions
-         ]);
-     }
- 
-     function getCertificates():array
-     {
-         return DB::table('Certificates')->get()->toArray();
-     }
- 
-     function updateCertificates($idCertificate)
-     {
-         //todo
-     }
- 
-     function removeCertificates($idCertificate)
-     {
-         //TODO
-     }
+    //addCertificate
+    function addCertificate($idPerson, $title, $receiptDate, $organizationName, $country, $city, $descriptions): void
+    {
+        DB::table('Certificates')->insert([
+            'idPerson' => $idPerson,
+            'title' => $title,
+            'receiptDate' => $receiptDate,
+            'organizationName' => $organizationName,
+            'country' => $country,
+            'city' => $city,
+            'descriptions' => $descriptions
+        ]);
+    }
+
+    function getCertificates(): array
+    {
+        return DB::table('Certificates')->get()->toArray();
+    }
+
+    function updateCertificates($idCertificate)
+    {
+        //todo
+    }
+
+    function removeCertificates($idCertificate)
+    {
+        //TODO
+    }
 }

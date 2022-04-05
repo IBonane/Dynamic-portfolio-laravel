@@ -17,7 +17,7 @@
                                 <h5>Création de profil</h5>
                             </div>
                             <p class="text-danger">Tous les champs en "*" sont obligatoires</p>
-                            <form action="{{ route('createProfil.post') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('updateProfil.post') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @if ($errors->any())
                                     @foreach ($errors->all() as $error)
@@ -26,19 +26,20 @@
                                         </ul>
                                     @endforeach
                                 @endif
+
                                 <div class="row mt-2">
                                     <div class="col-md-6">
                                         <label class="labels" for="firstname">Prenom <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="First name" name="firstname"
-                                            required>
+                                        <input type="text" class="form-control" placeholder="First name"
+                                            value="{{ $person->firstname }}" name="firstname" required>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="labels" for="lastname">Nom <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Last name" name="lastname"
-                                            required>
+                                        <input type="text" class="form-control" placeholder="Last name"
+                                            value="{{ $person->lastname }}" name="lastname" required>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -46,48 +47,56 @@
                                     <div class="col-md-12 mb-3">
                                         <label class="labels">Date de naissance <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" placeholder="Birthday" name="birthday"
-                                            required>
+                                        <input type="date" class="form-control" placeholder="Birthday"
+                                            value="{{ $person->birthday }}" name="birthday" required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                         <label class="labels">Email <span class="text-danger">*</span></label>
-                                        <input type="email" class="form-control" placeholder="Email" name="email"
-                                            required>
+                                        <input type="email" class="form-control" placeholder="Email"
+                                            value="{{ $person->email }}" name="email" required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                         <label class="labels">Contact <span class="text-danger">*</span></label>
                                         <input type="tel" class="form-control"
                                             placeholder="Phone number format : +33 6 11 11 12 12 ; Ecrire sans le premier zero de votre N°"
-                                            name="phone" required>
+                                            name="phone" value="{{ $person->phone }}" required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                         <label class="labels">Niveau d'étude <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-select" name="degree">
-                                            <option value="College">Bac</option>
-                                            <option value="Associate 1">Bac + 1</option>
-                                            <option value="Associate 2">Bac + 2</option>
-                                            <option value="Bachelor">Licence</option>
-                                            <option value="Master">Master</option>
-                                            <option value="Doctoral">Doctorat</option>
+                                            <option value="College" @if ($person->degree == 'College') selected @endif>Bac
+                                            </option>
+                                            <option value="Associate 1" @if ($person->degree == 'Associate 1') selected @endif>
+                                                Bac + 1</option>
+                                            <option value="Associate 2" @if ($person->degree == 'Associate 2') selected @endif>
+                                                Bac + 2</option>
+                                            <option value="Bachelor" @if ($person->degree == 'Bachelor') selected @endif>
+                                                Licence</option>
+                                            <option value="Master" @if ($person->degree == 'Master') selected @endif>Master
+                                            </option>
+                                            <option value="Doctoral" @if ($person->degree == 'Doctoral') selected @endif>
+                                                Doctorat</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                         <label class="labels">Domaine de compétence <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Domain" name="domain"
-                                            required>
+                                        <input type="text" class="form-control" placeholder="Domain"
+                                            value="{{ $person->domain }}" name="domain" required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                         <label class="labels mb-1">Présentez-vous <span class="text-danger">*</span><a
                                                 href="!#" class="mx-3 text-link bi-cursor" data-bs-toggle="modal"
                                                 data-bs-target="#myModal">voir-exemple</a></label>
-                                        <textarea type="text" class="form-control" placeholder="Presentation" name="presentation" required></textarea>
+                                        <textarea type="text" class="form-control" placeholder="Presentation" name="presentation" required>
+                                            {{ $person->presentation }}
+                                        </textarea>
                                     </div>
                                     <!-- ===============Modal =======================-->
                                     <div class="modal" id="myModal">
@@ -117,10 +126,9 @@
                                     </div>
                                     <!-- ===================End Modal===================== -->
                                     <div class="mb-3">
-                                        <label for="headerImage" class="form-label">Image d'entête <span
-                                                class="text-danger">*</span></label>
+                                        <label for="headerImage" class="form-label">Image d'entête</label>
                                         <input class="form-control form-control-sm" id="formFileSm" type="file"
-                                            accept="image/png, image/jpeg" name="headerImage" required>
+                                            accept="image/png, image/jpeg" name="headerImage">
                                     </div>
                                     <div class="mb-3">
                                         <label for="coverImage" class="form-label">Image de couverture</label>
@@ -136,12 +144,13 @@
                                 <div class="row mt-3">
                                     <div class="col-md-6 mb-4">
                                         <label class="labels">Pays <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Country" name="country"
-                                            required>
+                                        <input type="text" class="form-control" placeholder="Country"
+                                            value="{{ $person->country }}" name="country" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="labels">Ville <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="City" name="city" required>
+                                        <input type="text" class="form-control" placeholder="City"
+                                            value="{{ $person->city }}" name="city" required>
                                     </div>
                                 </div>
                                 <div class="mt-5 text-center">

@@ -13,6 +13,17 @@
                 <div class="row justify-content-center">
                     <div class="col-md-8 border-right">
                         <div class="p-3 py-5">
+                            @if (session()->has('message'))
+                                <div class="alert alert-success">
+                                    {{ session()->get('message') }}
+                                </div>
+                            @endif
+                            @if (session()->has('delete'))
+                                <div class="alert alert-danger">
+                                    {{ session()->get('delete') }}
+                                </div>
+                            @endif
+
                             <div class="d-flex justify-content-center align-items-center mb-3">
                                 <h5>Liste de mes créations</h5>
                             </div>
@@ -23,13 +34,43 @@
                             <div class="row mt-2 card">
                                 <div class="col-md-12 card-body d-flex justify-content-between">
                                     @if (empty($name))
-                                        <h5>Mon profil</h5>
+                                        <h5>Aucun Profil</h5>
+                                        <a class="btn btn-warning" href="{{ route('createProfil.show') }}">Créer
+                                            maintenant</a>
                                     @else
                                         <h5>{{ $name }}</h5>
+
+                                        <a class="btn btn-warning" href="{{ route('updateProfil.show') }}">Editer</a>
+                                        <a class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal">Supprimer</a>
                                     @endif
 
-                                    <button class="btn btn-warning">Editer</button>
-                                    <button class="btn btn-danger">Supprimer</button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Souhaitez-vous vraiment supprimer ce profil ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form action="{{ route('deleteProfil.post') }}" method="post">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger">OUI</button>
+                                                    </form>
+                                                    <button type="button" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">NON</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+
                                 </div>
                             </div>
                             {{-- End profil --}}

@@ -11,6 +11,8 @@ use Illuminate\Routing\Controller as BaseController;
 use Carbon\Carbon; // Include Class in COntroller
 use Exception;
 
+use function PHPUnit\Framework\isReadable;
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -107,6 +109,7 @@ class Controller extends BaseController
         return redirect()->route('login.show');
     }
 
+    //Create Profil
     public function showCreateProfil()
     {
         if (!request()->session()->has('user')) {
@@ -196,8 +199,6 @@ class Controller extends BaseController
             $coverImagePath = request()->file('coverImage')->storeAs('PersonImages', $filename, 'public');
         }
 
-        // dd($headerImagePath, $aboutImagePath, $coverImagePath);
-
         try {
             $this->repository->createPerson(
                 $firstname,
@@ -215,10 +216,150 @@ class Controller extends BaseController
                 $presentation,
                 $idSuperUser
             );
-            return redirect()->route('list.show');
+            return redirect()->route('list.show')->with('message', 'Profil créer avec succès !');
         } catch (Exception $e) {
             return redirect()->back();
         }
+    }
+
+    //Update Profil
+    public function showUpdateProfil()
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $person = $this->repository->getPerson()[0];
+        // dd($person);
+        return view('update_profil', ['person' => $person]);
+    }
+
+    public function updateProfil()
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $rules = [
+            'firstname' => ['required'],
+            'lastname' => ['required'],
+            'birthday' => ['required'],
+            'email' => ['required'],
+            'phone' => ['required'],
+            'degree' => ['required'],
+            'domain' => ['required'],
+            'presentation' => ['required'],
+            'country' => ['required'],
+            'city' => ['required'],
+            // 'headerImage' => ['required']
+        ];
+
+        $messages = [
+            'firstname.required' => "Vous devez saisir votre prenom",
+            'lastname.required' => "Entrer un nom de famille",
+            'birthday.required' => "Entrer votre  date de naissance",
+            'email.required' => "Entrer votre adresse mail",
+            'phone.required' => "Entrer votre numéro de téléphone",
+            'degree.required' => "Entrer votre niveau d'étude",
+            'domain.required' => "Entrer votre domaine d'étude ou de travail",
+            'presentation.required' => "Presentez vous brievement.",
+            'country.required' => "Entrer votre pays de résidence",
+            'city.required' => "Entrer votre ville de résidence.",
+            //'headerImage.required' => "Entrer une photo d'entête."
+        ];
+
+        $validatedData = request()->validate($rules, $messages);
+
+        $firstname = $validatedData['firstname'];
+        $lastname = $validatedData['lastname'];
+        $birthday = $validatedData['birthday'];
+        $email = $validatedData['email'];
+        $phone = $validatedData['phone'];
+        $degree = $validatedData['degree'];
+        $domain = $validatedData['domain'];
+        $presentation = $validatedData['presentation'];
+        $country = $validatedData['country'];
+        $city = $validatedData['city'];
+        // dd(request()->file('headerImage'));
+
+        $idSuperUser = session()->get('user')['id'];
+        $person = $this->repository->getPerson()[0];
+        //create unique filename image header and add new path image if is posible
+        $headerImagePath = "";
+        if (request()->headerImage == null) {
+            $headerImagePath = $person->headerImage;
+        } else {
+            //exception image
+            if (!is_file(request()->file('headerImage')) || !isReadable(request()->file('headerImage')))
+                return redirect()->back()->withInput()->withErrors('Taille d\'image d\'entête trop élevée !');
+
+            $filename = time() . '.' . request()->headerImage->extension();
+            //put image into storage folder and get path
+            $headerImagePath = request()->file('headerImage')->storeAs('PersonImages', $filename, 'public');
+        }
+
+        //create unique filename image about and add new path image if is posible
+        $aboutImagePath = "";
+        if (request()->aboutImage == null) {
+            $aboutImagePath = $person->aboutImage;
+        } else {
+            //exception image
+            if (!is_file(request()->file('aboutImage')) || !is_readable(request()->file('aboutImage')))
+                return redirect()->back()->withInput()->withErrors('Taille d\'image d\apropos trop élevée !');
+
+            $filename = time() . '.' . request()->aboutImage->extension();
+            //put image into storage folder and get path
+            $aboutImagePath = request()->file('aboutImage')->storeAs('PersonImages', $filename, 'public');
+        }
+
+        //create unique filename image about and add new path image if is posible
+        $coverImagePath = "";
+        if (request()->coverImage == null) {
+            $coverImagePath = $person->coverImage;
+        } else {
+            //exception image
+            if (!is_file(request()->file('coverImage')) || !is_readable(request()->file('coverImage')))
+                return redirect()->back()->withInput()->withErrors('Taille d\'image de couverture trop élevée !');
+
+            $filename = time() . '.' . request()->coverImage->extension();
+
+            //put image into storage folder and get path
+            $coverImagePath = request()->file('coverImage')->storeAs('PersonImages', $filename, 'public');
+        }
+        //dd($headerImagePath, $coverImagePath, $aboutImagePath);
+        try {
+            $this->repository->updatePerson(
+                $firstname,
+                $lastname,
+                $birthday,
+                $email,
+                $phone,
+                $degree,
+                $country,
+                $city,
+                $headerImagePath,
+                $coverImagePath,
+                $aboutImagePath,
+                $domain,
+                $presentation,
+                $idSuperUser
+            );
+            return redirect()->route('list.show')->with('message', 'Profil modifier avec succès !');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors('Modification de profil echouée !');
+        }
+    }
+
+    //Delete Profil
+    public function deleteProfil()
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $idSuperUser = session()->get('user')['id'];
+        $this->repository->deletePerson($idSuperUser);
+        return redirect()->route('list.show')->with('delete', 'Profil et toutes ses dépendances supprimer avec succès !');
     }
 
     public function addExperience()
@@ -261,11 +402,12 @@ class Controller extends BaseController
 
         //person
         $person = [];
+        $name="";
         $personArray = $this->repository->getPerson();
         if (count($personArray) != 0) {
 
             $name = $personArray[0]->firstname;
         }
-        return view('list', ['name'=>$name]);
+        return view('list', ['name' => $name]);
     }
 }

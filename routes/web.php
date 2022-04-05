@@ -16,9 +16,17 @@ use Illuminate\Support\Facades\Route;
 //Portfolio Accueil
 Route::get('/', [Controller::class, 'home'])->name('home');
 
-//Profil
+//create Profil
 Route::get('/create-profil', [Controller::class, 'showCreateProfil'])->name('createProfil.show');
 Route::post('/create-profil', [Controller::class, 'createProfil'])->name('createProfil.post');
+
+//update Profil
+Route::get('/update-profil', [Controller::class, 'showUpdateProfil'])->name('updateProfil.show');
+Route::post('/update-profil', [Controller::class, 'updateProfil'])->name('updateProfil.post');
+
+//delete Profil
+Route::post('/delete-profil', [Controller::class, 'deleteProfil'])->name('deleteProfil.post');
+
 
 Route::get('/add-experience', [Controller::class, 'addExperience'])->name('addExperience.show');
 
