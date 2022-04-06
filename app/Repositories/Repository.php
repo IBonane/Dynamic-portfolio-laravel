@@ -165,14 +165,27 @@ class Repository
         return DB::table('Experiences')->get()->toArray();
     }
 
-    function updateExperience($idExperience)
+    function getExperienceById($idExperience): array
     {
-        //todo
+        return DB::table('Experiences')->where('id', $idExperience)->get()->toArray();
     }
 
-    function removeExperience($idExperience)
+    function updateExperience($idExperience, $title, $beginDate, $endDate, $companyName, $country, $city, $descriptions): void
     {
-        //TODO
+        DB::table('Experiences')->where('id', $idExperience)->update([
+            'title' => $title,
+            'beginDate' => $beginDate,
+            'endDate' => $endDate,
+            'companyName' => $companyName,
+            'country' => $country,
+            'city' => $city,
+            'descriptions' => $descriptions
+        ]);
+    }
+
+    function deleteExperience($idExperience)
+    {
+        DB::table('Experiences')->where('id', $idExperience)->delete();
     }
     //=============================End Experiences==========================//
 
@@ -197,14 +210,27 @@ class Repository
         return DB::table('Formations')->get()->toArray();
     }
 
-    function updateFormation($idFormation)
+    function getFormationById($idFormation): array
     {
-        //todo
+        return DB::table('Formations')->where('id', $idFormation)->get()->toArray();
     }
 
-    function removeFormation($idFormation)
+    function updateFormation($idFormation, $title, $beginDate, $endDate, $schoolName, $country, $city, $descriptions): void
     {
-        //TODO
+        DB::table('Formations')->where('id', $idFormation)->update([
+            'title' => $title,
+            'beginDate' => $beginDate,
+            'endDate' => $endDate,
+            'schoolName' => $schoolName,
+            'country' => $country,
+            'city' => $city,
+            'descriptions' => $descriptions
+        ]);
+    }
+
+    function deleteFormation($idFormation)
+    {
+        DB::table('Formations')->where('id', $idFormation)->delete();
     }
     //=============================End Formations==========================//
 

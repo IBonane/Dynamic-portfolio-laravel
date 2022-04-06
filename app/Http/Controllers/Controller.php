@@ -382,8 +382,149 @@ class Controller extends BaseController
 
         return view('create_experience');
     }
+    //============================End Experience section ===========================//
 
-    //============================End Skill section ===========================//
+
+    //============================Formation ===========================//
+    public function addShowFormation()
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+        //person is exist ?
+        if (count($this->repository->getPerson()) == 0) {
+            return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
+        }
+
+        return view('create_formation');
+    }
+
+    public function addFormation()
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $rules = [
+            'title' => ['required'],
+            'beginDate' => ['required'],
+            'endDate' => ['required'],
+            'schoolName' => ['required'],
+            'country' => ['required'],
+            'city' => ['required'],
+            'description' => ['required']
+        ];
+
+        $messages = [
+            'title.required' => "Vous devez saisir un titre",
+            'beginDate.required' => "Entrer la date de début",
+            'endDate.required' => "Entrer la date de fin",
+            'schoolName.required' => "Entrer le nom de l'ecole ou de l'université",
+            'country.required' => "Entrer le pays de la formation",
+            'city.required' => "Entrer la ville de la formation",
+            'description.required' => "Entrer une description"
+        ];
+
+        $validatedData = request()->validate($rules, $messages);
+
+        $title = $validatedData['title'];
+        $beginDate = $validatedData['beginDate'];
+        $endDate = $validatedData['endDate'];
+        $schoolName = $validatedData['schoolName'];
+        $country = $validatedData['country'];
+        $city = $validatedData['city'];
+        $description = $validatedData['description'];
+
+        //dd($title, $beginDate, $endDate, $schoolName, $country, $city, $description);
+
+        $idPerson = $this->repository->getPerson()[0]->id;
+        //dd($idPerson);
+        try {
+            $this->repository->addFormation($idPerson, $title, $beginDate, $endDate, $schoolName, $country, $city, $description);
+            return redirect()->route('list.show')->with('message', 'Formation ajoutée avec succès !');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors('Ajout de Formation echoué !');
+        }
+    }
+
+    //Update Formation
+    public function updateShowFormation($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        //person is exist ?
+        if (count($this->repository->getPerson()) == 0) {
+            return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
+        }
+
+        $formation = $this->repository->getFormationById($id)[0];
+
+        return view('update_formation', ['formation' => $formation]);
+    }
+
+    public function updateFormation($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $rules = [
+            'title' => ['required'],
+            'beginDate' => ['required'],
+            'endDate' => ['required'],
+            'schoolName' => ['required'],
+            'country' => ['required'],
+            'city' => ['required'],
+            'description' => ['required']
+        ];
+
+        $messages = [
+            'title.required' => "Vous devez saisir un titre",
+            'beginDate.required' => "Entrer la date de début",
+            'endDate.required' => "Entrer la date de fin",
+            'schoolName.required' => "Entrer le nom de l'ecole ou de l'université",
+            'country.required' => "Entrer le pays de la formation",
+            'city.required' => "Entrer la ville de la formation",
+            'description.required' => "Entrer une description"
+        ];
+
+        $validatedData = request()->validate($rules, $messages);
+
+        $title = $validatedData['title'];
+        $beginDate = $validatedData['beginDate'];
+        $endDate = $validatedData['endDate'];
+        $schoolName = $validatedData['schoolName'];
+        $country = $validatedData['country'];
+        $city = $validatedData['city'];
+        $description = $validatedData['description'];
+
+        //dd($id, $title, $beginDate, $endDate, $schoolName, $country, $city, $description);
+
+        try {
+            $this->repository->updateFormation($id, $title, $beginDate, $endDate, $schoolName, $country, $city, $description);
+            return redirect()->route('list.show')->with('message', 'Formation mis à jour avec succès !');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors('mis à jour de Formation echoué !');
+        }
+    }
+
+    //Delete Formation
+    public function deleteFormation($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+        $title = $this->repository->getFormationById($id)[0]->title;
+
+        $this->repository->deleteFormation($id);
+        return redirect()->route('list.show')->with('message', 'Formation : "' . $title . '" supprimer avec succès !');
+    }
+    //============================End Formation section ===========================//
+
+
+    //============================Skill===========================//
     public function addShowSkill()
     {
         if (!request()->session()->has('user')) {
@@ -486,18 +627,6 @@ class Controller extends BaseController
 
     //============================End Skill section ===========================//
 
-    public function addFormation()
-    {
-        if (!request()->session()->has('user')) {
-            return redirect()->route('login.show');
-        }
-        //person is exist ?
-        if (count($this->repository->getPerson()) == 0) {
-            return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
-        }
-
-        return view('create_formation');
-    }
 
     //============================Certificates====================//
     public function addShowCertification()
@@ -628,6 +757,8 @@ class Controller extends BaseController
 
     //============================End Certificates section ===========================//
 
+
+    //============================List===========================//
     public function list()
     {
         if (!request()->session()->has('user')) {
@@ -663,4 +794,5 @@ class Controller extends BaseController
             'certificates' => $certificates
         ]);
     }
+    //============================End List section ===========================//
 }

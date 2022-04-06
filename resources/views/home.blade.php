@@ -28,8 +28,8 @@
 @section('content')
     <!-- ======= Hero Section ======= -->
     @if (empty($person))
-        <section style='background: url("{{asset('assets/img/cover.jpg')}}") top center; background-size: cover;' id="hero"
-            class="d-flex flex-column justify-content-center align-items-center">
+        <section style='background: url("{{ asset('assets/img/cover.jpg') }}") top center; background-size: cover;'
+            id="hero" class="d-flex flex-column justify-content-center align-items-center">
             <div class="hero-container" style="margin-left: 10%" data-aos="fade-down">
                 <h1 class="mb-5">Prenom Nom</h1>
                 <p>I'm in "votre domaine" Domain</p>
@@ -193,17 +193,17 @@
                         </div>
                     </div>
                 @else
-                    @foreach ($formations as $formation)
-                        <div class="d-flex-lg justify-content-center" data-aos="fade-up">
+                    <div class="d-flex-lg justify-content-center" data-aos="fade-up">
+                        @foreach ($formations as $formation)
                             <div class="resume-item">
                                 <h4>{{ $formation->title }}</h4>
                                 <h5>{{ $formation->beginDate }} - {{ $formation->endDate }}</h5>
                                 <p><em>{{ $formation->schoolName }}, {{ $formation->city }},
                                         {{ $formation->country }}</em></p>
-                                <p style="text-align: justify">{{ $formation->descriptions }}</p>
+                                <p class="col-lg-8" style="text-align: justify">{{ $formation->descriptions }}</p>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 @endif
             </div>
         </section>

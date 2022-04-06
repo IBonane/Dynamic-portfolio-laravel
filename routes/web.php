@@ -29,9 +29,34 @@ Route::post('/update-profil', [Controller::class, 'updateProfil'])->name('update
 Route::post('/delete-profil', [Controller::class, 'deleteProfil'])->name('deleteProfil.post');
 //========================End Profil=======================//
 
+
 //========================Experiences=======================//
-Route::get('/add-experience', [Controller::class, 'addExperience'])->name('addExperience.show');
+//add experience
+Route::get('/add-experience', [Controller::class, 'addShowExperience'])->name('addExperience.show');
+Route::post('/add-experience', [Controller::class, 'addExperience'])->name('addExperience.post');
+
+//Update experience
+Route::get('/update-experience/{id}', [Controller::class, 'updateShowExperience'])->name('updateExperience.show');
+Route::post('/update-experience/{id}', [Controller::class, 'updateExperience'])->name('updateExperience.post');
+
+//delete experience
+Route::post('/delete-experience/{id}', [Controller::class, 'deleteExperience'])->name('deleteExperience.post');
 //========================End Experiences=======================//
+
+
+//========================Formations=======================//
+//add formation
+Route::get('/add-formation', [Controller::class, 'addShowFormation'])->name('addFormation.show');
+Route::post('/add-formation', [Controller::class, 'addFormation'])->name('addFormation.post');
+
+//Update Formation
+Route::get('/update-formation/{id}', [Controller::class, 'updateShowFormation'])->name('updateFormation.show');
+Route::post('/update-formation/{id}', [Controller::class, 'updateFormation'])->name('updateFormation.post');
+
+//delete Formation
+Route::post('/delete-formation/{id}', [Controller::class, 'deleteFormation'])->name('deleteFormation.post');
+//========================End Formations=======================//
+
 
 //========================Skills=======================//
 //Add skill
@@ -46,9 +71,6 @@ Route::post('/update-skill/{id}', [Controller::class, 'updateSkill'])->name('upd
 Route::post('/delete-skill/{id}', [Controller::class, 'deleteSkill'])->name('deleteSkill.post');
 //========================End Skills=======================//
 
-//========================Formations=======================//
-Route::get('/add-formation', [Controller::class, 'addFormation'])->name('addFormation.show');
-//========================End Formations=======================//
 
 //========================Certificates=======================//
 //Add Certification
@@ -63,9 +85,11 @@ Route::post('/update-certification/{id}', [Controller::class, 'updateCertificati
 Route::post('/delete-certification/{id}', [Controller::class, 'deleteCertification'])->name('deleteCertification.post');
 //========================End Certificates=======================//
 
+
 //========================List=======================//
 Route::get('/list', [Controller::class, 'list'])->name('list.show');
 //========================End list=======================//
+
 
 //========================Login/logout=======================//
 Route::get('/login', [Controller::class, 'loginShow'])->name('login.show');
