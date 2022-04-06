@@ -122,6 +122,34 @@
                                         </div>
                                     </div>
                                     <!-- ===================End Modal===================== -->
+
+                                    <div class="row mt-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="labels">Github</label>
+                                            <input type="url" class="form-control" placeholder="link github"
+                                                name="github">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="labels">Twitter</label>
+                                            <input type="url" class="form-control" placeholder="link twitter"
+                                                name="twitter">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="labels">Skype</label>
+                                            <input type="url" class="form-control" placeholder="link skype" name="skype">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="labels">Linkedin</label>
+                                            <input type="url" class="form-control" placeholder="link linkedin"
+                                                name="linkedin">
+                                        </div>
+                                    </div>
+
                                     <div class="mb-3">
                                         <label for="headerImage" class="form-label">Image d'entête <span
                                                 class="text-danger">*</span></label>

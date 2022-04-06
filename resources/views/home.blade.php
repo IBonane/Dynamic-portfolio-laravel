@@ -23,7 +23,35 @@
         {{ $person->firstname }} {{ $person->lastname }}
     @endif
 @endsection
-{{-- headerImg --}}
+
+@section('github')
+    @if (!empty($person->github))
+        <a href="{{ $person->github }}" class="github" target="_blank" rel="noreferrer"><i
+                class="bx bxl-github"></i></a>
+    @endif
+@endsection
+
+@section('twitter')
+    @if (!empty($person->twitter))
+        <a href="{{ $person->twitter }}" class="twitter" target="_blank" rel="noreferrer"><i
+                class="bx bxl-twitter"></i></a>
+    @endif
+@endsection
+
+@section('skype')
+    @if (!empty($person->skype))
+        <a href="{{ $person->skype }}" class="google-plus" target="_blank" rel="noreferrer"><i
+                class="bx bxl-skype"></i></a>
+    @endif
+@endsection
+
+@section('linkedin')
+    @if (!empty($person->linkedin))
+        <a href=" {{ $person->linkedin }}" class="linkedin" target="_blank" rel="noreferrer"><i
+                class="bx bxl-linkedin"></i></a>
+    @endif
+@endsection
+
 
 @section('content')
     <!-- ======= Hero Section ======= -->

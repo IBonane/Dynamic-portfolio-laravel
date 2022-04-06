@@ -147,7 +147,6 @@ class Controller extends BaseController
             'presentation' => ['required'],
             'country' => ['required'],
             'city' => ['required'],
-            // 'headerImage' => ['required']
         ];
 
         $messages = [
@@ -161,7 +160,6 @@ class Controller extends BaseController
             'presentation.required' => "Presentez vous brievement.",
             'country.required' => "Entrer votre pays de résidence",
             'city.required' => "Entrer votre ville de résidence.",
-            //'headerImage.required' => "Entrer une photo d'entête."
         ];
 
         $validatedData = request()->validate($rules, $messages);
@@ -176,10 +174,20 @@ class Controller extends BaseController
         $presentation = $validatedData['presentation'];
         $country = $validatedData['country'];
         $city = $validatedData['city'];
-        // $headerImage = $validatedData['headerImage'];
-        // $aboutImage = request()->input('aboutImage');
-        // $coverImage = request()->input('coverImage');
         $idSuperUser = session()->get('user')['id'];
+
+        //socials networks
+        $github =  request()->input('github');
+        $twitter =  request()->input('twitter');
+        $skype =  request()->input('skype');
+        $linkedin =  request()->input('linkedin');
+
+        if($github==null) $github = "";
+        if($twitter==null) $twitter = "";
+        if($skype==null) $skype = "";
+        if($linkedin==null) $linkedin = "";
+        //dd($github, $twitter, $skype, $linkedin);
+
 
         //create unique filename image header and add new path image if is posible
         $headerImagePath = "";
@@ -226,6 +234,10 @@ class Controller extends BaseController
                 $aboutImagePath,
                 $domain,
                 $presentation,
+                $github,
+                $twitter,
+                $skype,
+                $linkedin,
                 $idSuperUser
             );
             return redirect()->route('list.show')->with('message', 'Profil créer avec succès !');
@@ -263,7 +275,6 @@ class Controller extends BaseController
             'presentation' => ['required'],
             'country' => ['required'],
             'city' => ['required'],
-            // 'headerImage' => ['required']
         ];
 
         $messages = [
@@ -277,7 +288,6 @@ class Controller extends BaseController
             'presentation.required' => "Presentez vous brievement.",
             'country.required' => "Entrer votre pays de résidence",
             'city.required' => "Entrer votre ville de résidence.",
-            //'headerImage.required' => "Entrer une photo d'entête."
         ];
 
         $validatedData = request()->validate($rules, $messages);
@@ -292,7 +302,18 @@ class Controller extends BaseController
         $presentation = $validatedData['presentation'];
         $country = $validatedData['country'];
         $city = $validatedData['city'];
-        // dd(request()->file('headerImage'));
+
+        //socials networks
+        $github =  request()->input('github');
+        $twitter =  request()->input('twitter');
+        $skype =  request()->input('skype');
+        $linkedin =  request()->input('linkedin');
+
+        if($github==null) $github = "";
+        if($twitter==null) $twitter = "";
+        if($skype==null) $skype = "";
+        if($linkedin==null) $linkedin = "";
+        //dd($github, $twitter, $skype, $linkedin);
 
         $idSuperUser = session()->get('user')['id'];
         $person = $this->repository->getPerson()[0];
@@ -354,6 +375,10 @@ class Controller extends BaseController
                 $aboutImagePath,
                 $domain,
                 $presentation,
+                $github,
+                $twitter,
+                $skype,
+                $linkedin,
                 $idSuperUser
             );
             return redirect()->route('list.show')->with('message', 'Profil modifier avec succès !');

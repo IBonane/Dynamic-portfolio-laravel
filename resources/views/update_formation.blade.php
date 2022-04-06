@@ -16,6 +16,7 @@
                             <div class="d-flex justify-content-center align-items-center mb-3">
                                 <h5>Mis à jour de formation</h5>
                             </div>
+                            <p class="text-danger">Tous les champs en "*" sont obligatoires</p>
                             <form action="{{ route('updateFormation.post', ['id' => $formation->id]) }}" method="post">
                                 @csrf
                                 @if ($errors->any())

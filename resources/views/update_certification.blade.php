@@ -16,6 +16,7 @@
                             <div class="d-flex justify-content-center align-items-center mb-3">
                                 <h5>Mis à jour de certification</h5>
                             </div>
+                            <p class="text-danger">Tous les champs en "*" sont obligatoires</p>
                             <form action="{{ route('updateCertification.post', ['id'=>$certificate->id]) }}" method="post">
                                 @csrf
 

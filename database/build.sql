@@ -30,6 +30,10 @@ CREATE TABLE Person(
     aboutImage VARCHAR(100),
     domain VARCHAR(100),
     presentation TEXT,
+    github VARCHAR(100),
+    twitter VARCHAR(100),
+    skype VARCHAR(100),
+    linkedin VARCHAR(100),
     idSuperUser VARCHAR(100) NOT NULL,
     FOREIGN KEY(idSuperUser) REFERENCES SuperUser(id)
 );

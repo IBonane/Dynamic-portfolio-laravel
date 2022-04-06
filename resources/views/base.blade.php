@@ -47,11 +47,12 @@
 
             <div class="profile">
                 <img src="@yield('headerImg')" alt="" class="img-fluid rounded-circle">
-                <h1 class="text-light text-center"><a href="index.html">@yield('name')</a></h1>
+                <h1 class="text-light text-center"><a>@yield('name')</a></h1>
                 <div class="social-links mt-3 text-center">
-                    <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-                    <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-                    <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                    @yield('github')
+                    @yield('twitter')
+                    @yield('skype')
+                    @yield('linkedin')
                 </div>
             </div>
 

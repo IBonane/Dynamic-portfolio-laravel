@@ -14,7 +14,7 @@
                     <div class="col-md-8 border-right">
                         <div class="p-3 py-5">
                             <div class="d-flex justify-content-center align-items-center mb-3">
-                                <h5>Création de profil</h5>
+                                <h5>Mis à jour de profil</h5>
                             </div>
                             <p class="text-danger">Tous les champs en "*" sont obligatoires</p>
                             <form action="{{ route('updateProfil.post') }}" method="post" enctype="multipart/form-data">
@@ -125,6 +125,35 @@
                                         </div>
                                     </div>
                                     <!-- ===================End Modal===================== -->
+
+                                    <div class="row mt-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="labels">Github</label>
+                                            <input type="url" class="form-control" placeholder="link github" name="github"
+                                                value="{{ $person->github }}">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="labels">Twitter</label>
+                                            <input type="url" class="form-control" placeholder="link twitter"
+                                                name="twitter" value="{{ $person->twitter }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="labels">Skype</label>
+                                            <input type="url" class="form-control" placeholder="link skype" name="skype"
+                                                value="{{ $person->skype }}">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="labels">Linkedin</label>
+                                            <input type="url" class="form-control" placeholder="link linkedin"
+                                                name="linkedin" value="{{ $person->linkedin }}">
+                                        </div>
+                                    </div>
+
                                     <div class="mb-3">
                                         <label for="headerImage" class="form-label">Image d'entête</label>
                                         <input class="form-control form-control-sm" id="formFileSm" type="file"
@@ -154,7 +183,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-5 text-center">
-                                    <button class="btn btn-primary" type="submit">Créer profile</button>
+                                    <button class="btn btn-primary" type="submit">Modifier</button>
                                 </div>
                             </form>
                         </div>

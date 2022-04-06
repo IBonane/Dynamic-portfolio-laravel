@@ -22,40 +22,48 @@ class DatabaseSeeder extends Seeder
         //Admin
         $this->repository->addSuperUser('#!WinoDjimba!AO@#', '!MeineProfil4516!');
         //person
-        // $firstname = "Inoussa Djimbala";
-        // $lastname = "Bonane";
-        // $birthday = "07/07/1993";
-        // $email = "bonanedjimbala@gmail.com";
-        // $phone = "+33 6 10 04 44 59";
-        // $degree = "Master";
-        // $country = "France";
-        // $city = "Marseille";
-        // $headerImage = "default/profil.png";
-        // $coverImage = "default/cover.jpg";
-        // $aboutImage = "default/about.jpg";
-        // $idSuperUser = "#!WinoDjimba!AO@#";
-        // $domain = "Computer Science";
-        // $presentation = "To enhance my professional skills, abilities and 
-        //                 knowledge in an organization that recognizes the value of hard work and gives 
-        //                 me responsibilities and challenges while adding value, 
-        //                 through my knowledge, to that organization.";
-        // // createPerson
-        // $this->repository->createPerson(
-        //     $firstname,
-        //     $lastname,
-        //     $birthday,
-        //     $email,
-        //     $phone,
-        //     $degree,
-        //     $country,
-        //     $city,
-        //     $headerImage,
-        //     $coverImage,
-        //     $aboutImage,
-        //     $domain,
-        //     $presentation,
-        //     $idSuperUser
-        // );
+        $firstname = "Inoussa Djimbala";
+        $lastname = "Bonane";
+        $birthday = "07/07/1993";
+        $email = "bonanedjimbala@gmail.com";
+        $phone = "+33 6 10 04 44 59";
+        $degree = "Master";
+        $country = "France";
+        $city = "Marseille";
+        $headerImage = "default/profil.png";
+        $coverImage = "default/cover.jpg";
+        $aboutImage = "default/about.jpg";
+        $idSuperUser = "#!WinoDjimba!AO@#";
+        $domain = "Computer Science";
+        $github = "https://github.com/IBonane";
+        $twitter = "";
+        $skype ="";
+        $linkedin ="https://www.linkedin.com/in/bonane";
+        $presentation = "To enhance my professional skills, abilities and 
+                        knowledge in an organization that recognizes the value of hard work and gives 
+                        me responsibilities and challenges while adding value, 
+                        through my knowledge, to that organization.";
+        // createPerson
+        $this->repository->createPerson(
+            $firstname,
+            $lastname,
+            $birthday,
+            $email,
+            $phone,
+            $degree,
+            $country,
+            $city,
+            $headerImage,
+            $coverImage,
+            $aboutImage,
+            $domain,
+            $presentation,
+            $github,
+            $twitter,
+            $skype,
+            $linkedin,
+            $idSuperUser
+        );
 
         // //same person
         // $idPerson = 1;

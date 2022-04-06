@@ -43,7 +43,7 @@ class Repository
         return ['id' => $rowUser->id];
     }
 
-    function createPerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $idSuperUser): void
+    function createPerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $github, $twitter, $skype, $linkedin, $idSuperUser): void
     {
         $verifyIfNoPerson = DB::table('Person')->get()->toArray();
 
@@ -65,6 +65,10 @@ class Repository
             'aboutImage' => $aboutImage,
             'domain' => $domain,
             'presentation' => $presentation,
+            'github' => $github,
+            'twitter' => $twitter,
+            'skype' => $skype,
+            'linkedin' => $linkedin,
             'idSuperUser' => $idSuperUser
 
         ]);
@@ -75,7 +79,7 @@ class Repository
         return DB::table('Person')->get()->toArray();
     }
 
-    function updatePerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $idSuperUser): void
+    function updatePerson($firstname, $lastname, $birthday, $email, $phone, $degree, $country, $city, $headerImage, $coverImage, $aboutImage, $domain, $presentation, $github, $twitter, $skype, $linkedin, $idSuperUser): void
     {
         DB::table('Person')->where('idSuperUser', $idSuperUser)->update([
             'firstname' => $firstname,
@@ -91,6 +95,10 @@ class Repository
             'aboutImage' => $aboutImage,
             'domain' => $domain,
             'presentation' => $presentation,
+            'github' => $github,
+            'twitter' => $twitter,
+            'skype' => $skype,
+            'linkedin' => $linkedin,
             'idSuperUser' => $idSuperUser
 
         ]);
