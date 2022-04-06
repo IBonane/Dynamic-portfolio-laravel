@@ -383,7 +383,8 @@ class Controller extends BaseController
         return view('create_experience');
     }
 
-    public function addCompetence()
+    //============================End Skill section ===========================//
+    public function addShowSkill()
     {
         if (!request()->session()->has('user')) {
             return redirect()->route('login.show');
@@ -394,8 +395,96 @@ class Controller extends BaseController
             return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
         }
 
-        return view('create_competence');
+        return view('create_skill');
     }
+
+    public function addSkill()
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $rules = [
+            'title' => ['required'],
+            'description' => ['required']
+        ];
+
+        $messages = [
+            'title.required' => "Vous devez saisir un titre",
+            'description.required' => "Entrer une description"
+        ];
+
+        $validatedData = request()->validate($rules, $messages);
+
+        $title = $validatedData['title'];
+        $description = $validatedData['description'];
+
+        //dd($title, $description);
+
+        $idPerson = $this->repository->getPerson()[0]->id;
+        //dd($idPerson);
+        try {
+            $this->repository->addSkill($idPerson, $title, $description);
+            return redirect()->route('list.show')->with('message', 'Compétence créer avec succès !');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors('Création de compétence echouée !');
+        }
+    }
+
+    //Update certification
+    public function updateShowSkill($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $skill = $this->repository->getSkillById($id)[0];
+
+        return view('update_skill', ['skill' => $skill]);
+    }
+
+    public function updateSkill($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $rules = [
+            'title' => ['required'],
+            'description' => ['required']
+        ];
+
+        $messages = [
+            'title.required' => "Vous devez saisir un titre",
+            'description.required' => "Entrer une description"
+        ];
+
+        $validatedData = request()->validate($rules, $messages);
+
+        $title = $validatedData['title'];
+        $description = $validatedData['description'];
+
+        try {
+            $this->repository->updateSkill($id, $title, $description);
+            return redirect()->route('list.show')->with('message', 'Compétence mis à jour avec succès !');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors('mis à jour de compétence echouée !');
+        }
+    }
+
+    //Delete skill
+    public function deleteSkill($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+        $title = $this->repository->getSkillById($id)[0]->title;
+
+        $this->repository->deleteSkill($id);
+        return redirect()->route('list.show')->with('message', 'Compétence : "' . $title . '" supprimer avec succès !');
+    }
+
+    //============================End Skill section ===========================//
 
     public function addFormation()
     {
@@ -410,6 +499,7 @@ class Controller extends BaseController
         return view('create_formation');
     }
 
+    //============================Certificates====================//
     public function addShowCertification()
     {
         if (!request()->session()->has('user')) {
@@ -515,10 +605,10 @@ class Controller extends BaseController
 
         // dd($title, $receiptDate, $organizationName, $country, $city, $description);
 
-        $idPerson = $this->repository->getPerson()[0]->id;
+        // $idPerson = $this->repository->getPerson()[0]->id;
         //dd($idPerson);
         try {
-            $this->repository->updateCertificate($id, $idPerson, $title, $receiptDate, $organizationName, $country, $city, $description);
+            $this->repository->updateCertificate($id, $title, $receiptDate, $organizationName, $country, $city, $description);
             return redirect()->route('list.show')->with('message', 'Certification modifier avec succès !');
         } catch (Exception $e) {
             return redirect()->back()->withInput()->withErrors('Modification de certification echouée !');
@@ -533,8 +623,10 @@ class Controller extends BaseController
         $title = $this->repository->getCertificateById($id)[0]->title;
 
         $this->repository->deleteCertificate($id);
-        return redirect()->route('list.show')->with('message', 'Certfication : "'.$title.'" supprimer avec succès !');
+        return redirect()->route('list.show')->with('message', 'Certfication : "' . $title . '" supprimer avec succès !');
     }
+
+    //============================End Certificates section ===========================//
 
     public function list()
     {

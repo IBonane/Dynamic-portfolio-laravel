@@ -16,18 +16,31 @@
                             <div class="d-flex justify-content-center align-items-center mb-3">
                                 <h5>Ajout de compétence</h5>
                             </div>
-                            <form action="" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('addSkill.post') }}" method="post">
+                                @csrf
+
+                                @if ($errors->any())
+                                    @foreach ($errors->all() as $error)
+                                        <ul class="list-unstyled" style="width:max-content">
+                                            <li class="alert alert-danger">{{ $error }}</li>
+                                        </ul>
+                                    @endforeach
+                                @endif
+
                                 <div class="row mt-2">
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels" for="title">Titre de la compétence</label>
-                                        <input type="text" class="form-control" placeholder="Title" name="title">
+                                        <label class="labels" for="title">Titre de la compétence <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Title" name="title" required>
                                     </div>
                                 </div>
 
                                 <div class="row mt-3">
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels mb-1">Description de la compétence</label>
-                                        <textarea type="text" class="form-control" placeholder="Description" name="description"></textarea>
+                                        <label class="labels mb-1">Description de la compétence <span
+                                                class="text-danger">*</span></label>
+                                        <textarea type="text" class="form-control" placeholder="Description" name="description" required>
+                                        </textarea>
                                         <p class="h6 text-danger mt-1">
                                             NB: Il est indispensable de séparer chaque étape de
                                             la description par un point-virgule ";"

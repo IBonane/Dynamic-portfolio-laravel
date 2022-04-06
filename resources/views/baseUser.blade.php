@@ -30,7 +30,7 @@
                             expérience</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('competence') h6" href="{{ route('addCompetence.show') }}">Ajout de
+                        <a class="nav-link @yield('competence') h6" href="{{ route('addSkill.show') }}">Ajout de
                             compétence</a>
                     </li>
                     <li class="nav-item">

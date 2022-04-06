@@ -14,6 +14,7 @@ class Repository
         DB::unprepared(file_get_contents('database/build.sql'));
     }
 
+    //=============================Person==========================//
     function addSuperUser($idSuperUser, $password): void
     {
         $hashPassword = Hash::make($password);
@@ -142,7 +143,9 @@ class Repository
         //delete person
         DB::table('Person')->where('idSuperUser', $idSuperUser)->delete();
     }
+    //=============================End Person==========================//
 
+    //=============================Experiences==========================//
     function addExperience($idPerson, $title, $beginDate, $endDate, $companyName, $country, $city, $descriptions): void
     {
         DB::table('Experiences')->insert([
@@ -171,6 +174,9 @@ class Repository
     {
         //TODO
     }
+    //=============================End Experiences==========================//
+
+    //=============================Formations==========================//
 
     function addFormation($idPerson, $title, $beginDate, $endDate, $schoolName, $country, $city, $descriptions): void
     {
@@ -200,8 +206,9 @@ class Repository
     {
         //TODO
     }
+    //=============================End Formations==========================//
 
-    //addSkill
+    //=============================Skills==========================//
     function addSkill($idPerson, $title, $descriptions): void
     {
         DB::table('Skills')->insert([
@@ -216,17 +223,27 @@ class Repository
         return DB::table('Skills')->get()->toArray();
     }
 
-    function updateSkills($idSkill)
+    function getSkillById($idSkill): array
     {
-        //todo
+        return DB::table('Skills')->where('id', $idSkill)->get()->toArray();
     }
 
-    function removeSkills($idSkill)
+    function updateSkill($idSkill, $title, $descriptions): void
     {
-        //TODO
+        DB::table('Skills')->where('id', $idSkill)->update([
+            'title' => $title,
+            'descriptions' => $descriptions
+        ]);
     }
 
-    //addCertificate
+    function deleteSkill($idSkill)
+    {
+        DB::table('Skills')->where('id', $idSkill)->delete();
+    }
+
+    //=============================End Skills=================================//
+
+    //================================Certificate==================================//
     function addCertificate($idPerson, $title, $receiptDate, $organizationName, $country, $city, $descriptions): void
     {
         DB::table('Certificates')->insert([
@@ -250,10 +267,9 @@ class Repository
         return DB::table('Certificates')->where('id', $idCertificate)->get()->toArray();
     }
 
-    function updateCertificate($idCertificate, $idPerson, $title, $receiptDate, $organizationName, $country, $city, $descriptions)
+    function updateCertificate($idCertificate, $title, $receiptDate, $organizationName, $country, $city, $descriptions)
     {
         DB::table('Certificates')->where('id', $idCertificate)->update([
-            'idPerson' => $idPerson,
             'title' => $title,
             'receiptDate' => $receiptDate,
             'organizationName' => $organizationName,
@@ -267,4 +283,6 @@ class Repository
     {
         DB::table('Certificates')->where('id', $idCertificate)->delete();
     }
+
+    //=============================End Certificate============================================//
 }
