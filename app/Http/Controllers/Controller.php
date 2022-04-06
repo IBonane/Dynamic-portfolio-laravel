@@ -122,6 +122,11 @@ class Controller extends BaseController
         if (!request()->session()->has('user')) {
             return redirect()->route('login.show');
         }
+
+        //person is exist ?
+        if (count($this->repository->getPerson()) != 0) {
+            return redirect()->route('list.show')->with('warning', 'vous avez déjà un profile, impossible d\'en créer un à nouveau !');
+        }
         return view('create_profil');
     }
 
@@ -366,10 +371,10 @@ class Controller extends BaseController
 
         $idSuperUser = session()->get('user')['id'];
         $this->repository->deletePerson($idSuperUser);
-        return redirect()->route('list.show')->with('warning', 'Profil et toutes ses dépendances supprimer avec succès !');
+        return redirect()->route('list.show')->with('warning', 'Profil et toutes ses dépendances supprimé avec succès !');
     }
 
-    public function addExperience()
+    public function addShowExperience()
     {
         if (!request()->session()->has('user')) {
             return redirect()->route('login.show');
@@ -381,6 +386,129 @@ class Controller extends BaseController
         }
 
         return view('create_experience');
+    }
+
+    public function addExperience()
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $rules = [
+            'title' => ['required'],
+            'beginDate' => ['required'],
+            'endDate' => ['required'],
+            'companyName' => ['required'],
+            'country' => ['required'],
+            'city' => ['required'],
+            'description' => ['required']
+        ];
+
+        $messages = [
+            'title.required' => "Vous devez saisir un titre",
+            'beginDate.required' => "Entrer la date de début",
+            'endDate.required' => "Entrer la date de fin",
+            'companyName.required' => "Entrer le nom de l'ecole ou de l'université",
+            'country.required' => "Entrer le pays de la formation",
+            'city.required' => "Entrer la ville de la formation",
+            'description.required' => "Entrer une description"
+        ];
+
+        $validatedData = request()->validate($rules, $messages);
+
+        $title = $validatedData['title'];
+        $beginDate = $validatedData['beginDate'];
+        $endDate = $validatedData['endDate'];
+        $companyName = $validatedData['companyName'];
+        $country = $validatedData['country'];
+        $city = $validatedData['city'];
+        $description = $validatedData['description'];
+
+        // dd($title, $beginDate, $endDate, $companyName, $country, $city, $description);
+
+        $idPerson = $this->repository->getPerson()[0]->id;
+        //dd($idPerson);
+        try {
+            $this->repository->addExperience($idPerson, $title, $beginDate, $endDate, $companyName, $country, $city, $description);
+            return redirect()->route('list.show')->with('message', 'Expérience ajoutée avec succès !');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors('Ajout d\'Expérience echoué !');
+        }
+    }
+
+    //Update Formation
+    public function updateShowExperience($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        //person is exist ?
+        if (count($this->repository->getPerson()) == 0) {
+            return redirect()->route('createProfil.show')->with('warning', 'vous n\'avez encore créer de profile !');
+        }
+
+        $experience = $this->repository->getExperienceById($id)[0];
+
+        return view('update_experience', ['experience' => $experience]);
+    }
+
+    public function updateExperience($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+
+        $rules = [
+            'title' => ['required'],
+            'beginDate' => ['required'],
+            'endDate' => ['required'],
+            'companyName' => ['required'],
+            'country' => ['required'],
+            'city' => ['required'],
+            'description' => ['required']
+        ];
+
+        $messages = [
+            'title.required' => "Vous devez saisir un titre",
+            'beginDate.required' => "Entrer la date de début",
+            'endDate.required' => "Entrer la date de fin",
+            'companyName.required' => "Entrer le nom de l'ecole ou de l'université",
+            'country.required' => "Entrer le pays de la formation",
+            'city.required' => "Entrer la ville de la formation",
+            'description.required' => "Entrer une description"
+        ];
+
+        $validatedData = request()->validate($rules, $messages);
+
+        $title = $validatedData['title'];
+        $beginDate = $validatedData['beginDate'];
+        $endDate = $validatedData['endDate'];
+        $companyName = $validatedData['companyName'];
+        $country = $validatedData['country'];
+        $city = $validatedData['city'];
+        $description = $validatedData['description'];
+
+        // dd($title, $beginDate, $endDate, $companyName, $country, $city, $description);
+
+        try {
+            $this->repository->updateExperience($id, $title, $beginDate, $endDate, $companyName, $country, $city, $description);
+            return redirect()->route('list.show')->with('message', 'Expérience mis à jour avec succès !');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors('mis à jour d\'Expérience echoué !');
+        }
+    }
+
+    //Delete Formation
+    public function deleteExperience($id)
+    {
+        if (!request()->session()->has('user')) {
+            return redirect()->route('login.show');
+        }
+        $title = $this->repository->getExperienceById($id)[0]->title;
+
+        $this->repository->deleteExperience($id);
+        return redirect()->route('list.show')->with('message', 'Expérience : "' . $title . '" supprimée avec succès !');
     }
     //============================End Experience section ===========================//
 
@@ -519,7 +647,7 @@ class Controller extends BaseController
         $title = $this->repository->getFormationById($id)[0]->title;
 
         $this->repository->deleteFormation($id);
-        return redirect()->route('list.show')->with('message', 'Formation : "' . $title . '" supprimer avec succès !');
+        return redirect()->route('list.show')->with('message', 'Formation : "' . $title . '" supprimée avec succès !');
     }
     //============================End Formation section ===========================//
 
@@ -622,7 +750,7 @@ class Controller extends BaseController
         $title = $this->repository->getSkillById($id)[0]->title;
 
         $this->repository->deleteSkill($id);
-        return redirect()->route('list.show')->with('message', 'Compétence : "' . $title . '" supprimer avec succès !');
+        return redirect()->route('list.show')->with('message', 'Compétence : "' . $title . '" supprimée avec succès !');
     }
 
     //============================End Skill section ===========================//
@@ -752,7 +880,7 @@ class Controller extends BaseController
         $title = $this->repository->getCertificateById($id)[0]->title;
 
         $this->repository->deleteCertificate($id);
-        return redirect()->route('list.show')->with('message', 'Certfication : "' . $title . '" supprimer avec succès !');
+        return redirect()->route('list.show')->with('message', 'Certfication : "' . $title . '" supprimée avec succès !');
     }
 
     //============================End Certificates section ===========================//

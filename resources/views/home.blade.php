@@ -193,8 +193,8 @@
                         </div>
                     </div>
                 @else
-                    <div class="d-flex-lg justify-content-center" data-aos="fade-up">
-                        @foreach ($formations as $formation)
+                    @foreach ($formations as $formation)
+                        <div class="d-flex-lg justify-content-center" data-aos="fade-up">
                             <div class="resume-item">
                                 <h4>{{ $formation->title }}</h4>
                                 <h5>{{ $formation->beginDate }} - {{ $formation->endDate }}</h5>
@@ -202,8 +202,8 @@
                                         {{ $formation->country }}</em></p>
                                 <p class="col-lg-8" style="text-align: justify">{{ $formation->descriptions }}</p>
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
                 @endif
             </div>
         </section>

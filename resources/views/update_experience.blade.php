@@ -1,8 +1,8 @@
 @extends('baseUser')
 
-@section('title', 'formation')
+@section('title', 'experience')
 
-@section('formation')
+@section('experience')
     active
 @endsection
 
@@ -14,9 +14,9 @@
                     <div class="col-md-8 border-right">
                         <div class="p-3 py-5">
                             <div class="d-flex justify-content-center align-items-center mb-3">
-                                <h5>Ajout de formation</h5>
+                                <h5>Mis à jour d'expérience</h5>
                             </div>
-                            <form action="{{ route('addFormation.post') }}" method="post">
+                            <form action="{{ route('updateExperience.post', ['id' => $experience->id]) }}" method="post">
                                 @csrf
                                 @if ($errors->any())
                                     @foreach ($errors->all() as $error)
@@ -28,57 +28,60 @@
 
                                 <div class="row mt-2">
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels" for="title">Titre de la formation <span
+                                        <label class="labels" for="title">Titre <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Title and degree"
-                                            name="title" required>
+                                        <input type="text" class="form-control" placeholder="Title" name="title"
+                                            value="{{ $experience->title }}" required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels" for="schoolName">Nom de l'établissement <span
+                                        <label class="labels" for="organizationName">Nom de l'organisme <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="School or University Name"
-                                            name="schoolName" required>
+                                        <input type="text" class="form-control" placeholder="companyName"
+                                            name="companyName" value="{{ $experience->companyName }}" required>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-md-6 mb-3">
                                         <label class="labels">Date de debut <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" placeholder="begin date" name="beginDate"
-                                            required>
+                                        <input type="date" class="form-control" placeholder="begin date"
+                                            value="{{ $experience->beginDate }}" name="beginDate" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="labels">Date de fin <span
                                                 class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" placeholder="end date" name="endDate"
-                                            required>
+                                        <input type="date" class="form-control" placeholder="end date"
+                                            value="{{ $experience->endDate }}" name="endDate" required>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md-12 mb-3">
-                                        <label class="labels mb-1">Description de la formation <span
+                                        <label class="labels mb-1">Description de l'expérience <span
                                                 class="text-danger">*</span></label>
-                                        <textarea type="text" class="form-control" placeholder="Description" name="description" required></textarea>
+                                        <textarea type="text" class="form-control" placeholder="Description" name="description"
+                                            required>{{ $experience->descriptions }}</textarea>
                                         <p class="h6 text-danger mt-1">
+                                            NB: Il est indispensable de séparer chaque étape de
+                                            la description par un point-virgule ";"
                                         </p>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-md-6 mb-4">
                                             <label class="labels">Pays <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" placeholder="Country" name="country"
-                                                required>
+                                            <input type="text" class="form-control" placeholder="Country"
+                                                value="{{ $experience->country }}" name="country" required>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="labels">Ville <span
                                                     class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" placeholder="City" name="city"
-                                                required>
+                                            <input type="text" class="form-control" placeholder="City"
+                                                value="{{ $experience->city }}" name="city" required>
                                         </div>
                                     </div>
 
                                     <div class="mt-5 text-center">
-                                        <button class="btn btn-primary" type="submit">Ajouter</button>
+                                        <button class="btn btn-primary" type="submit">Modifier</button>
                                     </div>
                             </form>
                         </div>

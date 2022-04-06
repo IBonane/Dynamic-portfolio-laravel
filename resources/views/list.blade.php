@@ -146,9 +146,38 @@
                                 @foreach ($experiences as $experience)
                                     <div class="row mt-2 card">
                                         <div class="col-md-12 card-body d-flex justify-content-between">
-                                            <h5>expérience 1</h5>
-                                            <button class="btn btn-warning">Editer</button>
-                                            <button class="btn btn-danger">Supprimer</button>
+                                            <h5>{{$experience->title}}</h5>
+                                            <a class="btn btn-warning"
+                                                href="{{ route('updateExperience.show', ['id' => $experience->id]) }}">Editer</a>
+                                            <a class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal{{ $experience->id }}">Supprimer</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal{{ $experience->id }}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Souhaitez-vous vraiment supprimer cette formation ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form
+                                                        action="{{ route('deleteExperience.post', ['id' => $experience->id]) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger">OUI</button>
+                                                    </form>
+                                                    <button type="button" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">NON</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach
